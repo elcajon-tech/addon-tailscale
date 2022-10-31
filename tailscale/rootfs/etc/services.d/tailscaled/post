@@ -6,6 +6,7 @@
 declare -a interfaces
 declare -a addresses
 declare -a routes
+declare -a options
 declare ipinfo
 declare tags
 
@@ -58,13 +59,30 @@ do
     | jq --exit-status '.BackendState == "Running" or .BackendState == "NeedsLogin"' &> /dev/null;
   then
     IFS=","
-    tailscale up \
-      --hostname "$(bashio::info.hostname)" \
-      --advertise-exit-node \
-      --accept-routes \
-      --advertise-routes="${routes[*]}" \
-      --advertise-tags="${tags}" \
-      --ssh
+
+    options+=(--hostname "$(bashio::info.hostname)")
+    options+=(--accept-routes)
+    options+=(--advertise-tags="${tags}")
+
+    if bashio::config.true "enable_ssh" ; then
+      options+=(--ssh=true)
+    else
+      options+=(--ssh=false)
+    fi
+
+    if bashio::config.true "enable_exit_node" ; then
+      options+=(--advertise-exit-node=true)
+    else
+      options+=(--advertise-exit-node=false)
+    fi
+
+    if bashio::config.true "enable_subnets" ; then
+      options+=(--advertise-routes="${routes[*]}")
+    else
+      options+=(--advertise-routes="")
+    fi
+
+    tailscale up "${options[@]}" 
 
     bashio::exit.ok
   fi

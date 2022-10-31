@@ -41,6 +41,7 @@ RUN \
     "https://github.com/caddyserver/caddy/releases/download/v${version}/caddy_${version}_linux_${ARCH}.tar.gz" \
         | tar zxvf - -C /tmp/ \
     && mv /tmp/caddy /usr/local/bin/ \
+    \
     && rm -f -r \
         /opt/systemd
 
