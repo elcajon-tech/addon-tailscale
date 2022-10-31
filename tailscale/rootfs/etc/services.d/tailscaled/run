@@ -1,0 +1,19 @@
+#!/command/with-contenv bashio
+# ==============================================================================
+# Home Assistant Add-on: Tailscale
+# Runs tailscale
+# ==============================================================================
+declare -a options
+
+bashio::log.info 'Starting Tailscale...'
+
+options+=(--state=/data/tailscaled.state)
+options+=(--statedir=/data/)
+options+=(--no-logs-no-support)
+options+=(--tun=userspace-networking)
+
+# Trigger post process to run, after stuff got connected
+./post &
+
+# Run Tailscale
+exec tailscaled "${options[@]}" &> /dev/null

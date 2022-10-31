@@ -1,0 +1,73 @@
+#!/command/with-contenv bashio
+# ==============================================================================
+# Home Assistant Add-on: Tailscale
+# Runs after the machine has been logged in into the Tailscale network
+# ==============================================================================
+declare -a interfaces
+declare -a addresses
+declare -a routes
+declare ipinfo
+declare tags
+
+# Find interfaces and matching addresses from which we can extract routes to be advertised
+interfaces+=($(bashio::network.interfaces))
+for interface in "${interfaces[@]}"; do
+    addresses+=($(bashio::network.ipv4_address "${interface}"))
+    addresses+=($(bashio::network.ipv6_address "${interface}"))
+done
+routes=()
+
+for address in "${addresses[@]}"; do
+  if bashio::var.has_value "${address}"; then
+    # Skip local link addresses
+    if [[ "${address:0:6}" == "fe80::" ]] || [[ "${address:0:8}" == "169.254." ]];
+    then
+      continue
+    fi
+
+    # Skip if forwarding for the address family is disabled
+    if [[ "${address}" =~ .*:.* ]];
+    then
+      [[ $(</proc/sys/net/ipv6/conf/all/forwarding) -eq 0 ]] && continue
+    else
+      [[ $(</proc/sys/net/ipv4/ip_forward) -eq 0 ]] && continue
+    fi
+
+    ipinfo="$(/usr/bin/ipcalc --json "${address}")"
+    routes+=($(bashio::jq "${ipinfo}" '.NETWORK + "/" + .PREFIX'))
+  fi
+done
+
+# Get configured tags
+if bashio::config.exists "tags" ; then
+  tags=$(bashio::config "tags | join(\",\")" "")
+else
+  tags=""
+fi
+
+# Wait for socket to be available
+while ! bashio::fs.socket_exists "/var/run/tailscale/tailscaled.sock";
+do
+  sleep 1
+done
+
+# Wait for the network to be available and logged in
+while true;
+do
+  if tailscale status --json --peers=false --self=false \
+    | jq --exit-status '.BackendState == "Running" or .BackendState == "NeedsLogin"' &> /dev/null;
+  then
+    IFS=","
+    tailscale up \
+      --hostname "$(bashio::info.hostname)" \
+      --advertise-exit-node \
+      --accept-routes \
+      --advertise-routes="${routes[*]}" \
+      --advertise-tags="${tags}" \
+      --ssh
+
+    bashio::exit.ok
+  fi
+  # Well... wait a bit more
+  sleep 2
+done

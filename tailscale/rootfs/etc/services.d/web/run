@@ -1,0 +1,15 @@
+#!/command/with-contenv bashio
+# ==============================================================================
+# Home Assistant Add-on: Tailscale
+# Runs tailscale web interface
+# ==============================================================================
+declare -a options
+
+bashio::log.info 'Starting Tailscale web...'
+
+options+=(web) 
+# Get random port
+options+=(-listen 127.0.0.1:25899)
+
+# Run Tailscale
+exec tailscale "${options[@]}" &> /dev/null
