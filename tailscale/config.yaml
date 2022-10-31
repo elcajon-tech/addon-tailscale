@@ -36,4 +36,3 @@ schema:
   enable_ssh: bool?
   enable_exit_node: bool?
   enable_subnets: bool?
-
