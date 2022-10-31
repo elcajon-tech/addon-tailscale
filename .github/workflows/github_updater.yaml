@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  VERSION_FILE_PATH: ./adguard-tailscale/versions.json
+  VERSION_FILE_PATH: ./tailscale/versions.json
   PR_LABELS: "dependencies"
 
 jobs:
