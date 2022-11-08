@@ -6,7 +6,6 @@ description: Zero config VPN for building secure networks
 url: https://github.com/elcajon-tech/addon-tailscale
 codenotary: codenotary@elcajon.dev
 ingress: true
-ingress_port: 0
 ingress_stream: true
 startup: services
 panel_icon: mdi:vpn

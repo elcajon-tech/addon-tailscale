@@ -10,7 +10,7 @@ bashio::net.wait_for 25899 localhost 900
 # Generate Ingress configuration
 bashio::var.json \
     interface "$(bashio::addon.ip_address)" \
-    port "^$(bashio::addon.ingress_port)" \
+    port "8099" \
     | tempio \
         -template /etc/nginx/templates/ingress.gtpl \
         -out /etc/nginx/servers/ingress.conf
