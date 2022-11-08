@@ -15,19 +15,18 @@ arch:
   - amd64
 init: false
 hassio_api: true
-hassio_role: manager
 privileged:
   - NET_ADMIN
 devices:
   - /dev/net/tun
 host_network: true
 map:
-  - config:ro
-  - share:ro
-  - backup:ro
-  - media:ro
-  - addons:ro
-  - ssl:ro
+  - config:rw
+  - share:rw
+  - backup:rw
+  - media:rw
+  - addons:rw
+  - ssl:rw
 options:
   enable_proxy: true
 schema:
