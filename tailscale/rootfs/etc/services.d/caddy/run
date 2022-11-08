@@ -6,12 +6,6 @@
 declare ha_service_protocol
 declare domain
 
-if bashio::config.false "enable_proxy"; then
-  s6-svc -O .
-  bashio::exit.ok
-fi
-
-bashio::log.info "Starting Caddy..."
 # Wait for socket to be available
 while ! bashio::fs.socket_exists "/var/run/tailscale/tailscaled.sock";
 do
@@ -36,11 +30,24 @@ do
     | jq --exit-status '.BackendState == "Running"' &> /dev/null;
   then
     IFS=","
-    domain=$(tailscale status --self=true --peers=false --json | jq -rc ".CertDomains[]")
-    bashio::log.info "Your Homeassistant instance is available via Tailscale."
-    bashio::log.info "Your Domain is ${domain}"
-    caddy reverse-proxy --from=${domain} --to=${ha_service_protocol}://homeassistant:$(bashio::core.port)
+    # Check if Tailnet domain is available
+    if tailscale status --self=true --peers=false --json | jq -rce ".CertDomains[]" &> /dev/null ; then
+      domain=$(tailscale status --self=true --peers=false --json | jq -rc ".CertDomains[]")
+      bashio::log.info "Your Homeassistant instance is available via Tailscale."
+      bashio::log.info "Your Domain is ${domain}"
+      # start Caddy proxy for HA instance
+      bashio::log.info "Starting Caddy..."
+      caddy reverse-proxy --from=${domain} --to=${ha_service_protocol}://homeassistant:$(bashio::core.port)
+    else
+      bashio::log.warning "Can't get your Tailscale domain, is HTTPS support enabled?"
+      bashio::log.warning "Enable HTTPS for your Tailnet to use the caddy proxy"
+      bashio::log.warning "https://tailscale.com/kb/1153/enabling-https/"
+
+      # bring service down and don't start it again
+      s6-svc -O .
+      bashio::exit.ok
+    fi
   fi
-  # Well... wait a bit more
+  # Wait for backend (Tailscaled) to be available and logged in (Tailscale)
   sleep 2
 done
