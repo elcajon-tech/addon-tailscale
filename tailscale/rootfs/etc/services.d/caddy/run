@@ -5,12 +5,19 @@
 # ==============================================================================
 declare ha_service_protocol
 declare domain
+declare executable
 
 # Wait for socket to be available
 while ! bashio::fs.socket_exists "/var/run/tailscale/tailscaled.sock";
 do
   sleep 1
 done
+
+if bashio::config.true "run_unstable" ; then
+    executable=tailscale_beta
+else
+    executable=tailscale
+fi
 
 bashio::log.debug "Checking if SSL is used..."
 if bashio::var.true "$(bashio::core.ssl)" ; then
@@ -26,13 +33,13 @@ fi
 
 while true;
 do
-  if tailscale status --json --peers=false --self=false \
+  if ${executable} status --json --peers=false --self=false \
     | jq --exit-status '.BackendState == "Running"' &> /dev/null;
   then
     IFS=","
     # Check if Tailnet domain is available
-    if tailscale status --self=true --peers=false --json | jq -rce ".CertDomains[]" &> /dev/null ; then
-      domain=$(tailscale status --self=true --peers=false --json | jq -rc ".CertDomains[]")
+    if ${executable} status --self=true --peers=false --json | jq -rce ".CertDomains[]" &> /dev/null ; then
+      domain=$(${executable} status --self=true --peers=false --json | jq -rc ".CertDomains[]")
       bashio::log.info "Your Homeassistant instance is available via Tailscale."
       bashio::log.info "Your Domain is ${domain}"
       # start Caddy proxy for HA instance

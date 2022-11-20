@@ -33,3 +33,4 @@ schema:
   enable_exit_node: bool?
   enable_subnets: bool?
   log_level: list(trace|debug|info|notice|warning|error|fatal)?
+  run_unstable: bool?
