@@ -32,7 +32,7 @@ RUN \
          "https://pkgs.tailscale.com/stable/tailscale_${version}_${ARCH}.tgz" \
          | tar zxvf - -C /usr/local/bin/ --strip-components 1 \
     && curl -L -s \
-         "https://pkgs.tailscale.com/unstable/tailscale_1.33.269_${ARCH}.tgz" \
+         "https://pkgs.tailscale.com/unstable/tailscale_1.33.298_${ARCH}.tgz" \
          | tar zxvf - -C /tmp/ --strip-components 1 \
     && mv /tmp/tailscaled /usr/local/bin/tailscaled_beta \
     && mv /tmp/tailscale /usr/local/bin/tailscale_beta \
