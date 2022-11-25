@@ -24,4 +24,4 @@ fi
 
 
 # Run Tailscale
-exec ${executable} "${options[@]}" &> /dev/null
+exec ${executable} "${options[@]}"

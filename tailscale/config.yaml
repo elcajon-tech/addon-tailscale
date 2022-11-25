@@ -20,6 +20,7 @@ privileged:
   - NET_ADMIN
 devices:
   - /dev/net/tun
+host_network: true
 map:
   - config:rw
   - share:rw
@@ -34,3 +35,4 @@ schema:
   enable_subnets: bool?
   log_level: list(trace|debug|info|notice|warning|error|fatal)?
   run_unstable: bool?
+  enable_proxy: bool?

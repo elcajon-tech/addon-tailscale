@@ -7,6 +7,11 @@ declare ha_service_protocol
 declare domain
 declare executable
 
+if bashio::config.false "enable_proxy"; then
+  s6-svc -O .
+  bashio::exit.ok
+fi
+
 # Wait for socket to be available
 while ! bashio::fs.socket_exists "/var/run/tailscale/tailscaled.sock";
 do
