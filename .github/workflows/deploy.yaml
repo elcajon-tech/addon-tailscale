@@ -38,7 +38,7 @@ jobs:
         uses: actions/checkout@v3
       - name: 🚀 Run add-on information action
         id: information
-        uses: frenck/action-addon-information@v1.4.0
+        uses: frenck/action-addon-information@v1.4.1
       - name: 🚀 Process possible slug override
         id: override
         run: |
@@ -85,7 +85,7 @@ jobs:
       - name: 🏗 Set up Docker Buildx
         uses: docker/setup-buildx-action@v2.2.1
       - name: 🏗 Set up Codenotary Community Attestation Service (CAS)
-        uses: frenck/action-setup-cas@v0.1.0
+        uses: frenck/action-setup-cas@v0.1.1
       - name: ℹ️ Compose build flags
         id: flags
         run: |
