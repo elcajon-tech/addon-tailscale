@@ -24,8 +24,8 @@ configuration:
       Enable this option if you want your local networks to be exposted with
       Tailscale. Other Tailscale instances will be able to route traffic to
       this subnets through this instance.
-  enable_proxy:
-    name: Enable Caddy proxy to access Home Assistant from Tailscale domain.
+  enable_funnel:
+    name: Enable Tailscale Funnel to accesss Home Assistant externally.
     description: >-
-      If enabled your instance will be available through a Tailscale issued
-      domain. HTTPS support needs to be enabled in Tailscale DNS settings.
+      If enabled your instance will be available through externally via
+      your Tailscale domain. See https://tailscale.com/kb/1223/tailscale-funnel
