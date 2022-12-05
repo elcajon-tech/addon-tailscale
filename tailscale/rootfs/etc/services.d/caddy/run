@@ -38,7 +38,7 @@ do
     if tailscale status --self=true --peers=false --json | jq -rce ".CertDomains[]" &> /dev/null ; then
       domain=$(tailscale status --self=true --peers=false --json | jq -rc ".CertDomains[]")
       bashio::log.info "Your Homeassistant instance is available via Tailscale."
-      bashio::log.info "Your Domain is ${domain}"
+      bashio::log.info "Your Domain is https://${domain}"
       # start Caddy proxy for HA instance
       bashio::log.info "Starting Caddy..."
       caddy reverse-proxy --from=${domain} --to=${ha_service_protocol}://homeassistant:$(bashio::core.port)

@@ -29,7 +29,7 @@ RUN \
     \
     && version=$(jq -r '."tailscale/tailscale"' /tmp/versions.json | sed 's/[[:alpha:]([:space:]]//g' ) \
     && curl -L -s \
-        "https://pkgs.tailscale.com/unstable/tailscale_1.33.298_${ARCH}.tgz" \
+        "https://pkgs.tailscale.com/stable/tailscale_${version}_${ARCH}.tgz" \
         | tar zxvf - -C /usr/local/bin/ --strip-components 1 \
     \
     && if [ "${BUILD_ARCH}" = "aarch64" ]; then ARCH="arm64"; fi \
