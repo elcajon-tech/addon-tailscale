@@ -1,4 +1,4 @@
 {
-  "tailscale/tailscale": "v1.32.3",
+  "tailscale/tailscale": "v1.34.0",
   "caddyserver/caddy": "v2.6.2"
 }
