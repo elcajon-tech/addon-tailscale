@@ -4,7 +4,6 @@
 # Runs tailscale
 # ==============================================================================
 declare -a options
-declare executable
 
 bashio::log.info 'Starting Tailscale...'
 
@@ -16,12 +15,5 @@ options+=(--tun=userspace-networking)
 # Trigger post process to run, after stuff got connected
 ./post &
 
-if bashio::config.true "run_unstable" ; then
-    executable=tailscaled_beta
-else
-    executable=tailscaled
-fi
-
-
 # Run Tailscale
-exec ${executable} "${options[@]}"
+exec tailscaled "${options[@]}"

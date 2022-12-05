@@ -9,14 +9,6 @@ declare -a routes
 declare -a options
 declare ipinfo
 declare tags
-declare executable
-
-if bashio::config.true "run_unstable" ; then
-    executable=tailscale_beta
-else
-    executable=tailscale
-fi
-
 
 # Find interfaces and matching addresses from which we can extract routes to be advertised
 interfaces+=($(bashio::network.interfaces))
@@ -63,7 +55,7 @@ done
 # Wait for the network to be available and logged in
 while true;
 do
-  if ${executable} status --json --peers=false --self=false \
+  if tailscale status --json --peers=false --self=false \
     | jq --exit-status '.BackendState == "Running" or .BackendState == "NeedsLogin"' &> /dev/null;
   then
     IFS=","
@@ -90,7 +82,7 @@ do
       options+=(--advertise-routes="")
     fi
 
-    ${executable} up "${options[@]}" 
+    tailscale up "${options[@]}" 
 
     bashio::exit.ok
   fi

@@ -4,18 +4,12 @@
 # Runs tailscale web interface
 # ==============================================================================
 declare -a options
-declare executable
+
 bashio::log.info 'Starting Tailscale web...'
 
 options+=(web) 
 # Get random port
 options+=(-listen 127.0.0.1:25899)
 
-if bashio::config.true "run_unstable" ; then
-    executable=tailscale_beta
-else
-    executable=tailscale
-fi
-
 # Run Tailscale
-exec ${executable} "${options[@]}" &> /dev/null
+exec tailscale "${options[@]}" &> /dev/null

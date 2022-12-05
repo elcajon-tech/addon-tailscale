@@ -29,13 +29,8 @@ RUN \
     \
     && version=$(jq -r '."tailscale/tailscale"' /tmp/versions.json | sed 's/[[:alpha:]([:space:]]//g' ) \
     && curl -L -s \
-         "https://pkgs.tailscale.com/stable/tailscale_${version}_${ARCH}.tgz" \
-         | tar zxvf - -C /usr/local/bin/ --strip-components 1 \
-    && curl -L -s \
-         "https://pkgs.tailscale.com/unstable/tailscale_1.33.298_${ARCH}.tgz" \
-         | tar zxvf - -C /tmp/ --strip-components 1 \
-    && mv /tmp/tailscaled /usr/local/bin/tailscaled_beta \
-    && mv /tmp/tailscale /usr/local/bin/tailscale_beta \
+        "https://pkgs.tailscale.com/unstable/tailscale_1.33.298_${ARCH}.tgz" \
+        | tar zxvf - -C /usr/local/bin/ --strip-components 1 \
     \
     && if [ "${BUILD_ARCH}" = "aarch64" ]; then ARCH="arm64"; fi \
     && if [ "${BUILD_ARCH}" = "armhf" ]; then ARCH="armv7"; fi \
