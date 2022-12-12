@@ -1,9 +1,12 @@
-ARG BUILD_FROM=ghcr.io/hassio-addons/base/amd64:12.2.6
+ARG BUILD_FROM=ghcr.io/hassio-addons/base/amd64:13.0.0
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
 # Copy in version file
 COPY versions.json /tmp/versions.json
+
+# Set S6 verbosity level
+ENV S6_VERBOSITY=1
 
 # Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -12,10 +15,10 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG BUILD_ARCH=amd64
 RUN \
     apk add --no-cache \
-        ip6tables=1.8.8-r1 \
-        ipcalc=1.0.1-r0 \
-        iproute2=5.17.0-r0 \
-        iptables=1.8.8-r1 \
+        ip6tables=1.8.8-r2 \
+        ipcalc=1.0.1-r1 \
+        iproute2=6.0.0-r1 \
+        iptables=1.8.8-r2 \
         nginx=1.22.1-r0 \
     \
     && ln -sf /sbin/xtables-nft-multi /sbin/ip6tables \
@@ -49,7 +52,11 @@ RUN \
     && mv /tmp/caddy /usr/local/bin/ \
     \
     && rm -f -r \
-        /opt/systemd
+        /opt/systemd \
+        /etc/cont-init.d \
+        /package/admin/s6-overlay/etc/s6-rc/sources/base/contents.d/legacy-cont-init \
+        /package/admin/s6-overlay/etc/s6-rc/sources/base/contents.d/fix-attrs \
+        /package/admin/s6-overlay/etc/s6-rc/sources/top/contents.d/legacy-services
 
 # Copy root filesystem
 COPY rootfs /

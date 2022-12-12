@@ -1,9 +1,16 @@
 #!/command/with-contenv bashio
 # ==============================================================================
 # Home Assistant Add-on: Tailscale
-# Take down the S6 supervision tree when Nginx fails
+# Take down the S6 supervision tree when Tailscale fails
 # ==============================================================================
+if test "$1" -eq 256 ; then
+  e=$((128 + $2))
+else
+  e="$1"
+fi
+echo "$e" > /run/s6-linux-init-container-results/exitcode
+
 if [[ "${1}" -ne 0 ]] && [[ "${1}" -ne 256 ]]; then
-  bashio::log.warning "Caddy crashed, halting add-on"
+  bashio::log.warning "tailscale crashed, halting add-on"
   /run/s6/basedir/bin/halt
 fi

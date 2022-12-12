@@ -82,6 +82,7 @@ do
       options+=(--advertise-routes="")
     fi
 
+    bashio::log.info 'Starting Tailscale VPN...'
     tailscale up "${options[@]}" 
 
     bashio::exit.ok
