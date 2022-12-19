@@ -13,4 +13,8 @@ options+=(--no-logs-no-support)
 options+=(--tun=userspace-networking)
 
 # Run Tailscale
-exec tailscaled "${options[@]}" &> /dev/null
+if bashio::debug ; then
+    exec tailscaled "${options[@]}"
+else
+    exec tailscaled "${options[@]}" &> /dev/null
+fi

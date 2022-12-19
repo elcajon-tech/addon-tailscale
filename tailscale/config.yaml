@@ -14,12 +14,14 @@ arch:
   - amd64
   - armhf
   - armv7
+  - i386
 init: false
 hassio_api: true
 privileged:
   - NET_ADMIN
 devices:
   - /dev/net/tun
+host_network: true
 map:
   - config:rw
   - share:rw
@@ -27,9 +29,15 @@ map:
   - media:rw
   - addons:rw
   - ssl:rw
+options:
+  enable_funnel: false
+  enable_exit_node: false
+  enable_subnets: false
+  enable_ssh: false
 schema:
-  tags: ["match(^tag:[a-zA-Z0-9]-?[a-zA-Z0-9]+$)?"]
-  enable_ssh: bool?
+  enable_funnel: bool?
   enable_exit_node: bool?
   enable_subnets: bool?
+  enable_ssh: bool?
+  tags: ["match(^tag:[a-zA-Z0-9]-?[a-zA-Z0-9]+$)?"]
   log_level: list(trace|debug|info|notice|warning|error|fatal)?
