@@ -47,7 +47,7 @@ using [this GitHub repository][ha-addons] or by clicking the button below.
 [docs]: https://github.com/elcajon-tech/addon-tailscale/blob/main/tailscale/DOCS.md
 [github-actions-shield]: https://github.com/elcajon-tech/addon-tailscale/workflows/CI/badge.svg
 [github-actions]: https://github.com/elcajon-tech/addon-tailscale/actions
-[i386-shield]: https://img.shields.io/badge/i386-no-red.svg
+[i386-shield]: https://img.shields.io/badge/i386-yes-green.svg
 [issue]: https://github.com/elcajon-tech/addon-tailscale/issues
 [license-shield]: https://img.shields.io/github/license/elcajon-tech/addon-tailscale.svg
 [maintenance-shield]: https://img.shields.io/maintenance/yes/2022.svg

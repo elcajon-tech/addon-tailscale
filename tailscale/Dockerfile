@@ -35,22 +35,6 @@ RUN \
         "https://pkgs.tailscale.com/stable/tailscale_${version}_${ARCH}.tgz" \
         | tar zxvf - -C /usr/local/bin/ --strip-components 1 \
     \
-    && if [ "${BUILD_ARCH}" = "aarch64" ]; then ARCH="arm64"; fi \
-    && if [ "${BUILD_ARCH}" = "armhf" ]; then ARCH="arm"; fi \
-    && if [ "${BUILD_ARCH}" = "armv7" ]; then ARCH="arm"; fi \
-    && if [ "${BUILD_ARCH}" = "amd64" ]; then ARCH="amd64"; fi \
-    \
-    && version=$(jq -r '."caddyserver/caddy"' /tmp/versions.json | sed 's/[[:alpha:]([:space:]]//g' ) \
-    \
-    && if [ "${BUILD_ARCH}" = "aarch64" ]; then ARCH="arm64"; fi \
-    && if [ "${BUILD_ARCH}" = "armhf" ]; then ARCH="armv7"; fi \
-    && if [ "${BUILD_ARCH}" = "armv7" ]; then ARCH="armv7"; fi \
-    && if [ "${BUILD_ARCH}" = "amd64" ]; then ARCH="amd64"; fi \
-    && curl -L -s \
-    "https://github.com/caddyserver/caddy/releases/download/v${version}/caddy_${version}_linux_${ARCH}.tar.gz" \
-        | tar zxvf - -C /tmp/ \
-    && mv /tmp/caddy /usr/local/bin/ \
-    \
     && rm -f -r \
         /opt/systemd \
         /etc/cont-init.d \
