@@ -13,4 +13,4 @@ options+=(--no-logs-no-support)
 options+=(--tun=userspace-networking)
 
 # Run Tailscale
-exec tailscaled "${options[@]}" &> /dev/null
+exec tailscaled "${options[@]}"
