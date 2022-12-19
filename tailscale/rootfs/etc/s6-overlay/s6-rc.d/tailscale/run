@@ -1,7 +1,7 @@
 #!/command/with-contenv bashio
 # ==============================================================================
 # Home Assistant Add-on: Tailscale
-# Runs after the machine has been logged in into the Tailscale network
+# Runs after the machine has been logged in into the Tailscale network and
 # ==============================================================================
 declare -a interfaces
 declare -a addresses
@@ -83,8 +83,7 @@ do
     fi
 
     bashio::log.info 'Starting Tailscale VPN...'
-    tailscale up "${options[@]}" 
-
+    tailscale up "${options[@]}"
     bashio::exit.ok
   fi
   # Well... wait a bit more

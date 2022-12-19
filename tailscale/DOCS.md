@@ -118,6 +118,12 @@ you need to assign the necessary ACL `nodeAttrs`.
 Check the following Tailscale guide on how to achieve this:
 <https://tailscale.com/kb/1223/tailscale-funnel/#setup>
 
+**Note**: _After initial set up it can take up to 10 minutes for the domain to
+be publicly available. You can use the `dig` command (Linux/MacOS) to regulary
+check if an A-record is already present for your domain
+(`dig homeassistant.YOUR-TS-DOMAIN.ts.net +short` should return an IP address
+once the record is published)._
+
 ### Option: `log_level`
 
 The `log_level` option controls the level of log output by the addon and can
