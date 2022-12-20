@@ -118,7 +118,6 @@ jobs:
         uses: creyD/prettier_action@v4.2
         with:
           prettier_options: --write **/*.{json,js,md,yaml}
-        env:
           GITHUB_TOKEN: ${{ secrets.UPDATER_TOKEN }}
 
   build:
