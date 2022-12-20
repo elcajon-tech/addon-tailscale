@@ -160,7 +160,7 @@ jobs:
         uses: codenotary/cas-notarize-docker-image-github-action@main
         with:
           asset: docker://ghcr.io/${{ github.repository_owner }}/${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:${{ needs.information.outputs.version }}
-          signerID: ${{ needs.information.outputs.signer }}
+          cas_api_key: ${{ secrets.CAS_API_KEY }}
       - name: 🚀 Push
         run: |
           docker push \
