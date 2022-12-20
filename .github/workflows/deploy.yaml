@@ -157,19 +157,17 @@ jobs:
       - name: 🔏 Authenticate new image
         if: needs.information.outputs.signer != 'null'
         id: authenticate_new_image
-        continue-on-error: true
         uses: codenotary/cas-authenticate-docker-image-github-action@main
         with:
           asset: docker://ghcr.io/${{ github.repository_owner }}/${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:${{ needs.information.outputs.version }}
           signerID: ${{ needs.information.outputs.signer }}
       - name: 🔏 Notarize new image
-        if: ${{ failure() && steps.authenticate_new_image.conclusion == 'failure' && needs.information.outputs.signer != 'null'}}
+        if: needs.information.outputs.signer != 'null'
         uses: codenotary/cas-notarize-docker-image-github-action@main
         with:
           asset: docker://ghcr.io/${{ github.repository_owner }}/${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:${{ needs.information.outputs.version }}
           signerID: ${{ needs.information.outputs.signer }}
       - name: 🚀 Push
-        # yamllint disable rule:line-length
         run: |
           docker push \
             "ghcr.io/${{ github.repository_owner }}/${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:${{ needs.information.outputs.environment }}"
