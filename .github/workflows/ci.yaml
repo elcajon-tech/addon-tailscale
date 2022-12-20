@@ -164,7 +164,7 @@ jobs:
         run: docker pull "${{ steps.flags.outputs.from }}"
       - name: ✅ Verify authenticity of base image
         if: needs.information.outputs.base_image_signer != 'null'
-        uses: codenotary/cas-authenticate-asset-github-action@main
+        uses: codenotary/cas-authenticate-docker-image-github-action@main
         with:
           asset: docker://${{ steps.flags.outputs.from }}
           signerID: ${{ needs.information.outputs.base_image_signer }}
