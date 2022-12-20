@@ -1,7 +1,6 @@
 ---
 name: Deploy
 
-# yamllint disable rule:line-length
 # yamllint disable-line rule:truthy
 on:
   release:
@@ -140,20 +139,7 @@ jobs:
             BUILD_REF=${{ github.sha }}
             BUILD_REPOSITORY=${{ github.repository }}
             BUILD_VERSION=${{ needs.information.outputs.version }}
-      #      - name: 🔏 Notarize
-      #        if: needs.information.outputs.signer != 'null'
-      #        # yamllint disable rule:line-length
-      #        run: |
-      #          if ! cas authenticate \
-      #            --signerID "${{ needs.information.outputs.signer }}" \
-      #            --silent \
-      #            "docker://ghcr.io/${{ github.repository_owner }}/${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:${{ needs.information.outputs.version }}";
-      #          then
-      #            cas notarize \
-      #              --api-key="${{ secrets.CAS_API_KEY }}" \
-      #              --name "${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:${{ needs.information.outputs.version }}" \
-      #              "docker://ghcr.io/${{ github.repository_owner }}/${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:${{ needs.information.outputs.version }}"
-      #          fi
+      # yamllint disable rule:line-length
       - name: 🔏 Notarize new image
         if: needs.information.outputs.signer != 'null'
         id: notarize_new_image
@@ -167,7 +153,7 @@ jobs:
             "ghcr.io/${{ github.repository_owner }}/${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:${{ needs.information.outputs.environment }}"
           docker push \
             "ghcr.io/${{ github.repository_owner }}/${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:${{ needs.information.outputs.version }}"
-
+      # yamllint enable rule:line-length
   publish-edge:
     name: 📢 Publish to edge repository
     if: needs.information.outputs.environment == 'edge'
