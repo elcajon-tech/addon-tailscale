@@ -11,6 +11,8 @@ on:
     branches: [main]
     types:
       - completed
+concurrency:
+  group: deploy
 
 jobs:
   information:
@@ -74,10 +76,6 @@ jobs:
       matrix:
         architecture: ${{ fromJson(needs.information.outputs.architectures) }}
     steps:
-      - name: 🔂 Wait for other runs to complete
-        uses: softprops/turnstyle@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: ⤵️ Check out code from GitHub
         uses: actions/checkout@v3
       - name: 🏗 Set up QEMU
