@@ -50,7 +50,7 @@ using [this GitHub repository][ha-addons] or by clicking the button below.
 [i386-shield]: https://img.shields.io/badge/i386-yes-green.svg
 [issue]: https://github.com/elcajon-tech/addon-tailscale/issues
 [license-shield]: https://img.shields.io/github/license/elcajon-tech/addon-tailscale.svg
-[maintenance-shield]: https://img.shields.io/maintenance/yes/2022.svg
+[maintenance-shield]: https://img.shields.io/maintenance/yes/2023.svg
 [releases-shield]: https://img.shields.io/github/release/elcajon-tech/addon-tailscale.svg
 [releases]: https://github.com/elcajon-tech/addon-tailscale/releases
 [project-stage-shield]: https://img.shields.io/badge/project%20stage-production%20ready-brightgreen.svg
